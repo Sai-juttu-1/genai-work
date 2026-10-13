@@ -1,116 +1,276 @@
-# GenAI · Agentic AI · AI Agents — course repo
+# Generative AI & Agentic Systems Lab
 
-Instructor: **Ajit Byru** · `ajitbyru@gmail.com` · github.com/byruajit
+[![CI](https://github.com/Sai-juttu-1/genai-work/actions/workflows/main.yml/badge.svg)](https://github.com/Sai-juttu-1/genai-work/actions/workflows/main.yml)
+![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?style=flat&logo=python&logoColor=white)
+![uv](https://img.shields.io/badge/uv-package%20management-DE5FE9?style=flat)
+![pytest](https://img.shields.io/badge/tested%20with-pytest-0A9EDC?style=flat&logo=pytest&logoColor=white)
 
-This repository is the single source of truth for the course: every command shown in class is here, character for character. If a slide and this README disagree, the README wins.
+> A practical engineering repository for building and testing Generative AI and Agentic AI systems.
 
-**Rule for the whole course: every Python command starts with `uv run`.** Never plain `python`, never `conda`. Have Anaconda? Keep it — it is never used and never touched. See `(base)` in your prompt? Ignore it.
+This project focuses on understanding and implementing the core technologies used in modern AI applications, from LLM fundamentals and embeddings to multimodal AI, structured outputs, model providers, and reliable AI workflows.
 
-> **Starting at Session 9?** Session 1's Git section is covered by the Git & GitHub webinar — watch it before Session 14. Do only step 8 of Session 1 (clone this repo), then all of Session 2's setup.
-
----
-
-## Session 1 — Git & GitHub
-
-Two repos live side by side in `Documents`: **genai-course-work** (yours — you push) and **genai-agents-course** (this one — you pull).
-
-| # | Step | Command |
-|---|---|---|
-| 1 | Install Git and VS Code, then **close and reopen the terminal** (already have them? verify only) | `winget install --id Git.Git -e` · `winget install --id Microsoft.VisualStudioCode -e` · `git --version` · `code --version` |
-| 2 | Identity — real name, professional email | `git config --global user.name "Your Name"` · `git config --global user.email "you@example.com"` · `git config --global init.defaultBranch main` · `git config --global core.autocrlf true` (Windows) |
-| 3 | Create **your** repo in the browser | github.com → New → `genai-course-work` → Public → tick "Add a README file" → Create |
-| 4 | Clone it | `cd ~\Documents` · `git clone https://github.com/<your-username>/genai-course-work.git` · `cd genai-course-work` · `code .` |
-| 5 | First commit (edit README.md) | `git status` · `git add README.md` · `git commit -m "Add intro to README"` · `git push` |
-| 6 | Second commit (create `notes/session01.md`) | `git add .` · `git commit -m "Session 1 notes"` · `git push` · `git log --oneline` |
-| 7 | Branch, change, merge | `git switch -c experiment` · edit · `git add . && git commit -m "Experiment"` · `git switch main` · `git merge experiment` · `git push` · `git branch -d experiment` |
-| 8 | Clone this course repo alongside | `cd ~\Documents` · `git clone https://github.com/byruajit/genai-agents-course.git` · `cd genai-agents-course` · `type .gitignore` · `git pull` |
-| 9 | **Checkpoint** | Your GitHub page shows ≥ 2 commits and the merge; `git config --global --list` shows your name and email |
-
-Start every session with `git pull` in this repo.
-
-**Secrets:** `.env` is in `.gitignore`, so `git add` ignores it. If a key ever reaches a commit it is public within minutes — revoke it in the Groq console and create a new one.
+**Tokens → Embeddings → Models → Providers → Structured Outputs → AI Systems → Agents**
 
 ---
 
-## Session 2 — set up your machine (Windows, PowerShell)
+## Engineering Focus
 
-Already have VS Code, Git or Python? Keep them. Skip the matching install line and run the version check only. Everyone runs steps 1, 2 and 5–8.
-
-| # | Step | Command |
-|---|---|---|
-| 1 | Install uv, then **close and reopen the terminal** (have uv? `uv self update`) | `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 \| iex"` then `uv self version` |
-| 1b | Only if step 1 still says "not recognized" after reopening | `[Environment]::SetEnvironmentVariable('Path', $env:Path + ';' + $HOME + '\.local\bin', 'User')` → reopen |
-| 2 | Python 3.12 via uv (do this even if you have Python; it never touches yours) | `uv python install 3.12` then `uv python list` |
-| 3 | Git and VS Code, then reopen the terminal (already installed? verify only) | `winget install --id Git.Git -e` · `winget install --id Microsoft.VisualStudioCode -e` · `git --version` · `code --version` |
-| 4 | Clone and open — never in `C:\WINDOWS\system32` | `cd ~\Documents` · `git clone https://github.com/byruajit/genai-agents-course.git` · `cd genai-agents-course` · `code .` |
-| 5 | Install pinned packages (VS Code terminal, Ctrl+`) | `uv sync` |
-| 6 | Private config — paste **your own** Groq key as `API_KEY` (free: console.groq.com → API Keys → Create); do not touch `MODEL`; no quotes; no trailing space | `copy .env.example .env` (Mac/Linux: `cp .env.example .env`) |
-| 7 | First LLM call — read the token count | `uv run python hello.py` |
-| 8 | **Checkpoint** | `uv run pytest tests/test_setup.py` → `3 passed` |
-| 9 | Background / homework | ollama.com → install → `ollama pull llama3.2:3b` |
-
-### Mac / Linux differences
-Step 1: `curl -LsSf https://astral.sh/uv/install.sh | sh` · Step 3: `xcode-select --install` (Mac) or `sudo apt install git` (Ubuntu); VS Code from code.visualstudio.com, then Command Palette → "Shell Command: Install code command in PATH" · Step 6: `cp` not `copy`. Everything else is identical.
-
-### Switching to Ollama (rate limits, or private data)
-In `.env`, comment the three Groq lines and uncomment the three Ollama lines. No code changes.
+- **LLM Foundations** — tokenization, BPE, context windows, token usage, and embeddings.
+- **Embeddings** — vector representations, cosine similarity, PCA, and SVD.
+- **Model Selection** — capability, latency, throughput, context, and cost.
+- **Provider Abstraction** — unified interfaces for Gemini, Groq, OpenAI, and Ollama.
+- **Multimodal AI** — image and document processing.
+- **Structured Outputs** — Pydantic models and schema-based validation.
+- **AI Reliability** — validation, testing, error handling, and reproducible workflows.
+- **Engineering Automation** — Python, uv, pytest, Git, and GitHub Actions.
 
 ---
 
-## Troubleshooting — the three errors that cover almost everything
+## Architecture
 
-**`uv` is not recognized** — you did not reopen the terminal. Close every terminal (including VS Code's) and open again. Still failing → step 1b.
-
-**401 invalid API key** — open `.env` (not `.env.example`). No quotes around the key, no trailing space, not the placeholder. If in doubt, create a new key in the Groq console and paste it again.
-
-**Ollama: model not found / connection refused** — not found → `ollama pull llama3.2:3b`. Connection refused → Ollama is not running: check the tray icon, or run `ollama serve` in a second terminal.
-
-**Model not found (404)** — the pinned model was retired. Run `uv run python list_models.py`, pick a current model, and tell the instructor; do not change `MODEL` on your own.
-
-Also seen: a warning that `UV_NATIVE_TLS` is deprecated — harmless, ignore. `uv version` (no dashes) errors outside a project — use `uv self version`.
-
----
-
-## Keys
-You create your own free Groq key at console.groq.com. It lives in `.env` and nowhere else. If it ever appears in chat, code or a screenshot, revoke it in the console immediately and create a new one.
-
-## Links
-- Community channel: _(added by instructor)_
-- Submission form: _(added by instructor)_
-- Baseline quiz: _(added by instructor)_
-- Fix videos: _(coming)_
-
-## Session 9b — tokens, cost, context, embeddings
-
-```powershell
-git pull
-uv sync                                  # adds jupyter, tiktoken, numpy, matplotlib
-ollama pull nomic-embed-text             # 270 MB, for the embeddings section (optional: a cached copy is used if Ollama is absent)
-uv run jupyter lab module01/s09_tokens.ipynb
-uv run pytest tests/test_s09.py          # checkpoint
+```text
+                         AI APPLICATION
+                              │
+                              ▼
+                    ┌───────────────────┐
+                    │  Application Layer │
+                    └─────────┬─────────┘
+                              │
+              ┌───────────────┼───────────────┐
+              ▼               ▼               ▼
+         LLM / RAG        Tools & APIs    Multimodal AI
+              │               │               │
+              └───────────────┼───────────────┘
+                              ▼
+                    AI SYSTEM COMPONENTS
+                              │
+                ┌─────────────┴─────────────┐
+                ▼                           ▼
+          Cloud Models                 Local Models
+                │                           │
+        Gemini / Groq / OpenAI            Ollama
 ```
-Pre-read: `module01/reading_tokens.md` (10 minutes). First run of `tiktoken` downloads its encoding file once (needs internet).
 
-## Session 10 — the model landscape
+---
 
-```powershell
-git pull
+## Core Implementations
+
+| Area | Implementation | Tests |
+|---|---|---|
+| **Tokens & Embeddings** | `s09_tokens.ipynb` · `tokens_utils.py` | `tests/test_s09.py` |
+| **Model Landscape** | `s10_model_matrix.ipynb` · `landscape_utils.py` | `tests/test_s10.py` |
+| **Provider Routing** | `s11_providers.ipynb` · `providers_utils.py` | `tests/test_s11.py` |
+| **Local Models** | `s12_local_models.ipynb` · `local_models_utils.py` | `tests/test_s12.py` |
+| **Vision & Structured Output** | `s13_vision_structured.ipynb` · `vision_utils.py` | `tests/test_s13.py` |
+
+---
+
+## Key Engineering Concepts
+
+### Embeddings
+
+Text can be converted into numerical vector representations that allow applications to measure semantic relationships.
+
+```text
+Text
+  ↓
+Embedding Model
+  ↓
+Vector Representation
+  ↓
+Similarity / Analysis
+```
+
+The project covers cosine similarity, vector spaces, PCA, and SVD.
+
+### Structured Outputs
+
+LLMs produce probabilistic responses, while applications need predictable data.
+
+```text
+LLM Response
+     ↓
+Schema Validation
+     ↓
+Valid → Application
+Invalid → Error / Recovery
+```
+
+Pydantic and structured schemas are used to create a reliable validation boundary.
+
+### Cloud and Local Models
+
+The project compares cloud and local inference approaches.
+
+```text
+             AI Application
+                   │
+          ┌────────┴────────┐
+          ▼                 ▼
+       Cloud              Local
+          │                 │
+ Gemini / Groq / OpenAI   Ollama
+```
+
+---
+
+## Testing & CI
+
+The project uses automated testing with `pytest` and GitHub Actions.
+
+Tests cover:
+
+- Core functionality
+- Data validation
+- Provider logic
+- Structured outputs
+- AI-related utilities
+
+API-dependent tests are skipped when credentials are unavailable in CI.
+
+```text
+Code Change
+    ↓
+Git Commit
+    ↓
+GitHub
+    ↓
+GitHub Actions
+    ↓
+Install Dependencies
+    ↓
+Run pytest
+    ↓
+Pass / Fail
+```
+
+---
+
+## Repository Structure
+
+```text
+genai-work/
+│
+├── .github/
+│   └── workflows/
+│       └── main.yml
+│
+├── module01/
+│   ├── s09_tokens.ipynb
+│   ├── tokens_utils.py
+│   │
+│   ├── s10_model_matrix.ipynb
+│   ├── landscape_utils.py
+│   │
+│   ├── s11_providers.ipynb
+│   ├── providers_utils.py
+│   │
+│   ├── s12_local_models.ipynb
+│   ├── local_models_utils.py
+│   │
+│   ├── s13_vision_structured.ipynb
+│   └── vision_utils.py
+│
+├── tests/
+│   ├── test_s09.py
+│   ├── test_s10.py
+│   ├── test_s11.py
+│   ├── test_s12.py
+│   └── test_s13.py
+│
+├── showcase/
+│
+├── pyproject.toml
+├── uv.lock
+└── README.md
+```
+
+---
+
+## Quickstart
+
+### Prerequisites
+
+- Python 3.12+
+- Git
+- uv
+
+### Clone
+
+```bash
+git clone https://github.com/Sai-juttu-1/genai-work.git
+cd genai-work
+```
+
+### Install Dependencies
+
+```bash
 uv sync
-uv run jupyter lab module01/s10_model_matrix.ipynb
-uv run pytest tests/test_s10.py          # checkpoint (works offline)
 ```
-Pre-read: `module01/reading_landscape.md` (10 minutes). Terms: `module01/terms_s10.md`. Catalog numbers are **indicative** — verifying two of them is part of the lab. To submit: run the last notebook cell, then upload `module01/s10_matrix_output.md` through the submission form (personal repositories start at Session 14).
 
-## Layout
+### Run Tests
+
+```bash
+uv run pytest
 ```
-module01/                   Session 9b notebook, helpers, pre-read
-hello.py                    Session 2 first call
-list_models.py              which models your key can use
-tests/test_setup.py         Session 2 checkpoint
-tests/test_s09.py           Session 9b checkpoint
-tests/test_s10.py           Session 10 checkpoint
-cheatsheet/python-for-agents.md
-.env.example                copy to .env
-pyproject.toml              pinned dependencies (uv sync)
+
+---
+
+## Technical Coverage
+
+```text
+Generative AI
+├── LLM Foundations
+├── Tokens & Embeddings
+├── Model Selection
+├── Provider Abstraction
+├── Local Models
+├── Multimodal AI
+├── Structured Outputs
+└── AI Testing
+
+Engineering
+├── Python
+├── pytest
+├── uv
+├── Git
+└── GitHub Actions
+
+Agentic AI
+├── RAG
+├── Vector Databases
+├── Tool Calling
+├── Agent Workflows
+├── Agent Evaluation
+├── Guardrails
+├── MCP
+└── AI Observability
 ```
-Modules are added as the course progresses (`module01/ … module14/`).
+
+---
+
+## Future Direction
+
+The project is being extended toward larger Generative AI and Agentic AI systems:
+
+- RAG pipelines
+- Vector databases
+- Tool calling
+- Agent workflows
+- Agent evaluation
+- Guardrails
+- MCP integrations
+- API orchestration
+- AI observability
+- Production-oriented AI services
+
+The long-term goal is to build **modular, testable, and reliable AI systems**.
+
+---
+
+## About
+
+This project represents hands-on work in **AI Engineering, Generative AI, and Agentic AI system development**.
+
+> **Understand → Build → Measure → Validate → Test → Automate**
+
